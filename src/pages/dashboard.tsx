@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { generateMockData, User, CryptoAsset, Transaction, PerformanceData } from '@/data/mockData';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Line, Doughnut } from 'react-chartjs-2';
-import { Chart as ChartJS, ArcElement, CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, ChartOptions, ArcElement, CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend } from 'chart.js';
 import Link from 'next/link';
 
 ChartJS.register(ArcElement, CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend);
@@ -85,14 +85,15 @@ export default function Dashboard() {
     }
   };
 
-  const chartOptions = {
+  
+  const chartOptions: ChartOptions<'line'> = {
     responsive: true,
     plugins: {
       legend: {
         display: false,
       },
       tooltip: {
-        mode: 'index',
+        mode: 'index' as const,
         intersect: false,
       },
     },
@@ -104,7 +105,7 @@ export default function Dashboard() {
           text: 'Date',
         },
         ticks: {
-          maxTicksLimit: 10, 
+          maxTicksLimit: 10,
         },
       },
       y: {
@@ -114,8 +115,11 @@ export default function Dashboard() {
           text: 'Portfolio Value ($)',
         },
         ticks: {
-          callback: function(value, index, values) {
-            return '$' + value.toLocaleString();
+          callback: function(value: number | string, index: number, values: any[]): string {
+            if (typeof value === 'number') {
+              return '$' + value.toLocaleString();
+            }
+            return value;
           },
         },
       },
