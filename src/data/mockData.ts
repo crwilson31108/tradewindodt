@@ -144,13 +144,13 @@ export const generatePerformanceData = (days: number): PerformanceData[] => {
     });
   };
 
-export const generateMockData = () => {
+export const generateMockData = (days: number = 30) => {
     const user = generateUser();
     const usedCryptos = new Set<string>();
     const cryptoAssets = Array.from({ length: 5 }, () => generateCryptoAsset(usedCryptos));
     const transactions = Array.from({ length: 20 }, generateTransaction);
-    const performanceData = generatePerformanceData(30);
-    const earningsData = generateEarningsData(30);
+    const performanceData = generatePerformanceData(days);
+    const earningsData = generateEarningsData(days);
     const exchangeData = generateExchangeData();
     const stakingInfo = Array.from({ length: 3 }, generateStakingInfo);
 
